@@ -12,6 +12,7 @@ pyTelegramBotAPI = "==3.5.2"
 requests = "==2.18.4"
 spotipy = "==2.4.4"
 telegraphapi = "==0.5"
+flask = "==0.12"
 
 
 [dev-packages]
