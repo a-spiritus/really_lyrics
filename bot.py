@@ -39,7 +39,7 @@ def get_lyrics(message):
     bot.send_message(message.chat.id, cunnilingus() + link, reply_markup=markup)
 
 
-@server.route("/" + bot, methods=['POST'])
+@server.route("/" + config.token, methods=['POST'])
 def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
     return "!", 200
