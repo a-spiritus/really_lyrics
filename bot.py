@@ -39,7 +39,7 @@ def get_lyrics(message):
     bot.send_message(message.chat.id, cunnilingus() + link, reply_markup=markup)
 
 
-@server.route("/" + config.token, methods=['POST'])
+@server.route("/", methods=['POST'])
 def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
     return "!", 200
@@ -53,5 +53,5 @@ def webhook():
 
 
 if __name__ == "__main__":
-    server.run(host="liricsreally.herokuapp.com", port=int(os.environ.get('PORT', 80)))
+    server.run(host="0.0.0.0", port=int(3334))
 
