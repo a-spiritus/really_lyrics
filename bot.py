@@ -53,5 +53,7 @@ def webhook():
 
 
 if __name__ == "__main__":
+    server = Flask(__name__)
     server.run(host="0.0.0.0", port=int(3334))
+    server = Flask(__name__)
 
