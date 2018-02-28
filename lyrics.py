@@ -92,10 +92,12 @@ def by_title(request):
         return "Sorry, text not found :c"
 
     try:
+        artist = artist[:artist.find('(')].strip()
         link = telegraph(artist, song, lyrics)
         add_to_storage(song_id, link)
     except:
         print("Telegraph error")
+    song = song[:song.find('(')].strip()
     return link, get_link(artist, song)
 
 

@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 
 import telebot
+import os
+from flask import Flask, request
 import config
 import lyrics as ly
 import random
 from telebot import types
 
 bot = telebot.TeleBot(config.token)
-
+server = Flask(__name__)
 
 def cunnilingus():
     cuni = ['Great taste!\n', 'Great music!\n', 'You have an excellent taste!\n',
@@ -35,6 +37,21 @@ def get_lyrics(message):
         markup.add(btn_my_site)
     bot.send_message(message.chat.id, cunnilingus() + link, reply_markup=markup)
 
+@server.route("/bot", methods=['POST'])
+def getMessage():
+    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+    return "!", 200
 
-if __name__ == "__main__":
-    bot.polling(none_stop=True)
+
+@server.route("/")
+def webhook():
+    bot.remove_webhook()
+    bot.set_webhook(url="https://liricsreally.herokuapp.com/")
+    return "!", 200
+
+
+server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+server = Flask(__name__)
+
+# bot.remove_webhook()
+# bot.polling(none_stop=True)
