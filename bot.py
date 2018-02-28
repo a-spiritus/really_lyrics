@@ -7,9 +7,10 @@ import config
 import lyrics as ly
 import random
 from telebot import types
-import logging
 
 bot = telebot.TeleBot(config.token)
+server = Flask(__name__)
+
 
 def cunnilingus():
     cuni = ['Great taste!\n', 'Great music!\n', 'You have an excellent taste!\n',
@@ -38,42 +39,19 @@ def get_lyrics(message):
     bot.send_message(message.chat.id, cunnilingus() + link, reply_markup=markup)
 
 
-# @server.route("/bot", methods=['POST'])
-# def getMessage():
-#     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-#     return "!", 200
-#
-#
-# @server.route("/")
-# def webhook():
-#     bot.remove_webhook()
-#     bot.set_webhook(url="https://liricsreally.herokuapp.com/")
-#     return "!", 200
-#
-#
-# server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 8443)))
+@server.route("/" + bot, methods=['POST'])
+def getMessage():
+    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+    return "!", 200
 
 
-# Здесь пишем наши хэндлеры
-
-# Проверим, есть ли переменная окружения Хероку (как ее добавить смотрите ниже)
-if "HEROKU" in list(os.environ.keys()):
-    logger = telebot.logger
-    telebot.logger.setLevel(logging.INFO)
-
-    server = Flask(__name__)
-    @server.route("/bot", methods=['POST'])
-    def getMessage():
-        bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-        return "!", 200
-    @server.route("/")
-    def webhook():
-        bot.remove_webhook()
-        bot.set_webhook(url="https://liricsreally.herokuapp.com/") # этот url нужно заменить на url вашего Хероку приложения
-        return "?", 200
-    server.run(host=os.environ.get('IP'), port=int(os.environ.get('PORT', 80)))
-else:
-    # если переменной окружения HEROKU нету, значит это запуск с машины разработчика.
-    # Удаляем вебхук на всякий случай, и запускаем с обычным поллингом.
+@server.route("/")
+def webhook():
     bot.remove_webhook()
-    bot.polling(none_stop=True)
+    bot.set_webhook(url="https://liricsreally.herokuapp.com/" + config.token)
+    return "!", 200
+
+
+if __name__ == "__main__":
+    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 80)))
+
