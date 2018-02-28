@@ -54,7 +54,10 @@ def get_lyrics(message):
 # server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 8443)))
 
 
-@server.route('/' + config.token, methods=['POST'])
+server = Flask(__name__)
+
+
+@server.route("/bot", methods=['POST'])
 def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
     return "!", 200
@@ -63,12 +66,11 @@ def getMessage():
 @server.route("/")
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url='https://liricsreally.herokuapp.com/' + config.token)
-    return "!", 200
+    bot.set_webhook(url="https://liricsreally.herokuapp.com/") # этот url нужно заменить на url вашего Хероку приложения
+    return "?", 200
 
 
-if __name__ == "__main__":
-    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+server.run(host="0.0.0.0", port=os.environ.get('PORT', 80))
 
 
 # bot.remove_webhook()
