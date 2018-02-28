@@ -37,6 +37,7 @@ def get_lyrics(message):
         markup.add(btn_my_site)
     bot.send_message(message.chat.id, cunnilingus() + link, reply_markup=markup)
 
+
 @server.route("/bot", methods=['POST'])
 def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
@@ -50,8 +51,8 @@ def webhook():
     return "!", 200
 
 
-server.run(host="0.0.0.0", port=443)
-server = Flask(__name__)
+server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 8443)))
+
 
 # bot.remove_webhook()
 # bot.polling(none_stop=True)
