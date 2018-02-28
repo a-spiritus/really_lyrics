@@ -69,9 +69,4 @@ def webhook():
     bot.set_webhook(url="https://liricsreally.herokuapp.com/") # этот url нужно заменить на url вашего Хероку приложения
     return "?", 200
 
-
 server.run(host="0.0.0.0", port=os.environ.get('PORT', 80))
-
-
-# bot.remove_webhook()
-# bot.polling(none_stop=True)
